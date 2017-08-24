@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Crystal Game</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  
+  <link href="https://fonts.googleapis.com/css?family=Baloo+Bhaijaan" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+  
+  <style type="text/css">
+
+    .crystal-image {
+      width: 300px;
+      height: 300px;
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="container">
+
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <h1>Crystal Collector!</h1>
+      <h3 class="dropdown">How do I play?</h3>
+      <div class="instructions col-md-8 col-md-offset-2">
+        <p>You're given a random number at the start of the game. Your goal is to click on the crystals and get your total score to match this number.</p>
+        <p>Clicking on a crystal will add a set amount of points to your total score.</p>
+        <p>The value of each crystal is hidden from you until you click on it.</p>
+        <p>You win the game by matching your total score to the random number, you lose the game if your total score goes above the random number.</p>
+        <p>Each time the game starts, the crystals will get a new random value.</p>
+      </div>
+    </div>
+  </div>
+  <br><br>
+
+  <div class="row">
+
+    <div class="col-md-6 text-center">
+      <div class="col-md-12">
+        <h2>Match This Number: <span class="numberdisplay"></h2>
+      </div>
+      <div class="col-md-12">
+        <h2>Your Current Number: <span class="guessdisplay">0</span></h2>
+      </div>
+
+      <div class="col-md-12">
+      <br>
+      <br>
+        <div class="col-md-2 col-md-offset-2">
+          <img class="bluecrystal" src="assets/images/blue.png">
+        </div>
+        <div class="col-md-2">
+          <img class="redcrystal" src="assets/images/red.png">
+        </div>
+        <div class="col-md-2">
+          <img class="yellowcrystal" src="assets/images/yellow.png">
+        </div>
+        <div class="col-md-2">
+          <img class="greencrystal" src="assets/images/green.png">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-md-6">
+      <div class="col-md-12 text-center stats">
+
+        <h2 class="underline">Stats</h2>
+        <p>Wins: <span id="winsdisplay">0</span></p>
+        <p>Losses: <span id="lossesdisplay">0</span></p>
+        <p>Current Streak: <span id="currentstreakdisplay">0</span></p>
+        <p>Longest Streak: <span id="longeststreakdisplay">0</span></p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <script type="text/javascript">
+  
+  var number = Math.floor((Math.random() * 102) + 19);
+
+  var blue = Math.floor((Math.random() * 12) + 1);
+  var red = Math.floor((Math.random() * 12) + 1);
+  var yellow = Math.floor((Math.random() * 12) + 1);
+  var green = Math.floor((Math.random() * 12) + 1);
+
+  var guessTotal = 0;
+  var wins = 0;
+  var losses = 0;
+  var currentStreak = 0;
+  var longestStreak = 0;
+ 
+  $(".numberdisplay").html(number);
+ 
+  $(".bluecrystal").click(function() {
+    update(blue);
+  });
+  $(".redcrystal").click(function() {
+    update(red);
+  });
+  $(".yellowcrystal").click(function() {
+    update(yellow);
+  });
+  $(".greencrystal").click(function() {
+    update(green);
+  });
+  $(".dropdown").click(function() {
+    $(".instructions").toggle("slow");
+  })
+
+  function reset() {
+   
+    number = Math.floor((Math.random() * 102) + 19);
+    
+    $(".numberdisplay").html(number);
+    
+    blue = Math.floor((Math.random() * 12) + 1);
+    red = Math.floor((Math.random() * 12) + 1);
+    yellow = Math.floor((Math.random() * 12) + 1);
+    green = Math.floor((Math.random() * 12) + 1);
+    
+    guessTotal = 0;
+   
+    $(".guessdisplay").html(guessTotal);
+  };
+ 
+  function update(color) {
+    
+    guessTotal += color;
+    
+    $(".guessdisplay").empty();
+    $(".guessdisplay").append(guessTotal);
+    
+    if (guessTotal > number) {
+      
+      losses++;
+     
+      $("#lossesdisplay").html(losses);
+      
+      reset();
+      
+      if (currentStreak > longestStreak) {
+        longestStreak = currentStreak;
+      };
+      
+      currentStreak = 0
+   
+      $("#currentstreakdisplay").html(currentStreak);
+      $("#longeststreakdisplay").html(longestStreak);
+    } else if (guessTotal == number) {
+      
+      wins++;
+    
+      $("#winsdisplay").html(wins);
+      
+      reset();
+      
+      currentStreak++;
+      
+      $("#currentstreakdisplay").html(currentStreak);
+      
+      if (currentStreak > longestStreak) {
+        longestStreak = currentStreak;
+      };
+      
+      $("#longeststreakdisplay").html(longestStreak);
+    };
+  };
+</script>
+
+
+</body>
+</html>
